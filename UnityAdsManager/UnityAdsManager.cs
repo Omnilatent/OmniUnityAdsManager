@@ -38,7 +38,7 @@ public class UnityAdsManager : MonoBehaviour, IUnityAdsListener, IAdsNetworkHelp
     void Start()
     {
         //Monetization.Initialize(Const.GAMEID, testMode);
-        Advertisement.Initialize(AdNetworkSetting.Instance.unityGameID, testMode);
+        Advertisement.Initialize(CustomMediation.unityGameId, testMode);
         if (showBannerOnStart)
             StartCoroutine(ShowBannerWhenReady(CustomMediation.GetUnityPlacementId(AdPlacement.Banner)));
         //interstitialSplashContent = Monetization.GetPlacementContent(interstitialSplash) as ShowAdPlacementContent;
