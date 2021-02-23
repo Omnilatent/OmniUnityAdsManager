@@ -6,9 +6,6 @@
     "description": "Ads helper for Unity Ads",
     "keywords": ["ads"],
     "category": "Wrapper",
-    "dependencies": {
-        "com.omnilatent.adsmanager": "https://github.com/nguyentrong101094/OmniAdsManager.git"
-    },
     "author": {
         "name": "Trong",
         "email": "nguyentrong101094@gmail.com",
