@@ -260,4 +260,9 @@ public class UnityAdsManager : MonoBehaviour, IUnityAdsListener, IAdsNetworkHelp
         FirebaseManager.LogEvent($"UnityAds_{message}", param, value);
 #endif
     }
+
+    public void RequestInterstitialRewardedNoShow(AdPlacement.Type placementType, RewardDelegate onFinish = null)
+    {
+        onFinish?.Invoke(new RewardResult(RewardResult.Type.LoadFailed, "Not supported by Unity Ads"));
+    }
 }
