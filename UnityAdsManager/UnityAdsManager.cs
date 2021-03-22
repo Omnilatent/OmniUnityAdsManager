@@ -265,4 +265,9 @@ public class UnityAdsManager : MonoBehaviour, IUnityAdsListener, IAdsNetworkHelp
     {
         onFinish?.Invoke(new RewardResult(RewardResult.Type.LoadFailed, "Not supported by Unity Ads"));
     }
+
+    public void ShowInterstitialRewarded(AdPlacement.Type placementType, RewardDelegate onAdClosed)
+    {
+        onAdClosed?.Invoke(new RewardResult(RewardResult.Type.LoadFailed, "Not supported by Unity Ads"));
+    }
 }
