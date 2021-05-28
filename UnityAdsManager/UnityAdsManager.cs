@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Omnilatent.AdsMediation;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,7 +41,7 @@ public class UnityAdsManager : MonoBehaviour, IUnityAdsListener, IAdsNetworkHelp
         //Monetization.Initialize(Const.GAMEID, testMode);
         Advertisement.Initialize(CustomMediation.unityGameId, testMode);
         if (showBannerOnStart)
-            StartCoroutine(ShowBannerWhenReady(CustomMediation.GetUnityPlacementId(AdPlacement.Banner)));
+            StartCoroutine(ShowBannerWhenReady(CustomMediation.GetUnityPlacementId(AdPlacement.Banner), BannerPosition.BOTTOM_CENTER));
         //interstitialSplashContent = Monetization.GetPlacementContent(interstitialSplash) as ShowAdPlacementContent;
 
         Advertisement.AddListener(this);
@@ -78,14 +79,14 @@ public class UnityAdsManager : MonoBehaviour, IUnityAdsListener, IAdsNetworkHelp
         //    Manager.LoadingAnimation(false);
     }
 
-    public static void ShowBanner(string placementId, AdsManager.InterstitialDelegate onAdLoaded = null)
+    public static void ShowBanner(string placementId, BannerPosition bannerPosition, AdsManager.InterstitialDelegate onAdLoaded = null)
     {
-        instance.StartCoroutine(instance.ShowBannerWhenReady(placementId, onAdLoaded));
+        instance.StartCoroutine(instance.ShowBannerWhenReady(placementId, bannerPosition, onAdLoaded));
     }
 
-    IEnumerator ShowBannerWhenReady(string placementId, AdsManager.InterstitialDelegate onAdLoaded = null)
+    IEnumerator ShowBannerWhenReady(string placementId, BannerPosition bannerPosition, AdsManager.InterstitialDelegate onAdLoaded = null)
     {
-        Advertisement.Banner.SetPosition(BannerPosition.BOTTOM_CENTER);
+        Advertisement.Banner.SetPosition(bannerPosition);
 
         BannerLoadOptions options = new BannerLoadOptions { loadCallback = OnLoadBannerSuccess, errorCallback = OnLoadBannerFail };
         Advertisement.Banner.Load(placementId, options);
@@ -235,7 +236,26 @@ public class UnityAdsManager : MonoBehaviour, IUnityAdsListener, IAdsNetworkHelp
 
     public void ShowBanner(AdPlacement.Type placementType, AdsManager.InterstitialDelegate onAdLoaded = null)
     {
-        ShowBanner(CustomMediation.GetUnityPlacementId(placementType), onAdLoaded);
+        ShowBanner(placementType, Omnilatent.AdsMediation.BannerTransform.defaultValue, onAdLoaded);
+    }
+
+    public void ShowBanner(AdPlacement.Type placementType, BannerTransform bannerTransform, AdsManager.InterstitialDelegate onAdLoaded = null)
+    {
+        BannerPosition adPosition;
+        switch (bannerTransform.adPosition)
+        {
+            case Omnilatent.AdsMediation.AdPosition.Top:
+            case Omnilatent.AdsMediation.AdPosition.TopLeft:
+            case Omnilatent.AdsMediation.AdPosition.TopRight:
+                adPosition = BannerPosition.TOP_CENTER;
+                break;
+            case Omnilatent.AdsMediation.AdPosition.Bottom:
+            case Omnilatent.AdsMediation.AdPosition.Center:
+            default:
+                adPosition = BannerPosition.BOTTOM_CENTER;
+                break;
+        }
+        ShowBanner(CustomMediation.GetUnityPlacementId(placementType), adPosition, onAdLoaded);
     }
 
     public void ShowInterstitial(AdPlacement.Type placementType, AdsManager.InterstitialDelegate onAdClosed)
